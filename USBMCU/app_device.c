@@ -54,7 +54,6 @@
             //User application buffer for receiving and holding OUT packets sent from the host
             unsigned char OUTPacket0[USBGEN_EP_SIZE];
             unsigned char OUTPacket1[USBGEN_EP_SIZE];
-            unsigned char OUTPacket2[USBGEN_EP_SIZE];
         #pragma udata
     #elif defined(__XC8)
         //User application buffer for sending IN packets to the host
@@ -64,7 +63,6 @@
         //User application buffer for receiving and holding OUT packets sent from the host
         unsigned char OUTPacket0[USBGEN_EP_SIZE] VENDOR_BASIC_DEMO_OUT_DATA_BUFFER_0_ADDRESS;
         unsigned char OUTPacket1[USBGEN_EP_SIZE] VENDOR_BASIC_DEMO_OUT_DATA_BUFFER_1_ADDRESS;
-        unsigned char OUTPacket2[USBGEN_EP_SIZE] VENDOR_BASIC_DEMO_OUT_DATA_BUFFER_2_ADDRESS;
     #endif
 #else
     //User application buffer for sending IN packets to the host
@@ -73,13 +71,11 @@
     //User application buffer for receiving and holding OUT packets sent from the host
     unsigned char OUTPacket0[USBGEN_EP_SIZE];
     unsigned char OUTPacket1[USBGEN_EP_SIZE];
-    unsigned char OUTPacket2[USBGEN_EP_SIZE];
 #endif
 
 static USB_HANDLE USBInHandle;   //USB handle.  Must be initialized to 0 at startup.
 static USB_HANDLE USBOutHandle0;  //USB handle.  Must be initialized to 0 at startup.
 static USB_HANDLE USBOutHandle1;  //USB handle.  Must be initialized to 0 at startup.
-static USB_HANDLE USBOutHandle2;  //USB handle.  Must be initialized to 0 at startup.
 
 bool OUTNext;
 
@@ -102,7 +98,6 @@ void APP_DeviceInitialize(void)
     USBInHandle = 0;
     USBOutHandle0 = 0;
     USBOutHandle1 = 0;
-    USBOutHandle2 = 0;
 
     //Enable the application endpoints
     USBEnableEndpoint(USBGEN_EP_NUM,USB_OUT_ENABLED|USB_IN_ENABLED|USB_HANDSHAKE_ENABLED|USB_DISALLOW_SETUP);
@@ -110,7 +105,6 @@ void APP_DeviceInitialize(void)
     //Arm the application OUT endpoint, so it can receive a packet from the host
     USBOutHandle0 = USBGenRead(USBGEN_EP_NUM,(uint8_t*)&OUTPacket0,USBGEN_EP_SIZE);
     USBOutHandle1 = USBGenRead(USBGEN_EP_NUM,(uint8_t*)&OUTPacket1,USBGEN_EP_SIZE);
-    USBOutHandle2 = USBGenRead(USBGEN_EP_NUM,(uint8_t*)&OUTPacket2,USBGEN_EP_SIZE);
     OUTNext = 0;
 }//end UserInit
 
@@ -177,20 +171,6 @@ void APP_DeviceTasks(void)
 			
 			//USBOutHandle1 = USBTransferOnePacket(1, OUT_FROM_HOST,(uint8_t*)&OUTPacket1,64);
             USBOutHandle1 = USBGenRead(USBGEN_EP_NUM,(uint8_t*)&OUTPacket1,USBGEN_EP_SIZE);
-            OUTNext = 2;
-        }
-    } else if (OUTNext == 2) {
-        if(!USBHandleBusy(USBOutHandle2))		//Check if the endpoint has received any data from the host.
-        {
-            handleOutPacket(OUTPacket2);
-            //Re-arm the OUT endpoint for the next packet:
-            //The USBGenRead() function call "arms" the endpoint (and makes it "busy").  If the endpoint is armed, the SIE will
-            //automatically accept data from the host, if the host tries to send a packet of data to the endpoint.  Once a data
-            //packet addressed to this endpoint is received from the host, the endpoint will no longer be busy, and the application
-            //can read the data which will be sitting in the buffer.
-			
-			//USBOutHandle2 = USBTransferOnePacket(1, OUT_FROM_HOST,(uint8_t*)&OUTPacket2,64);
-            USBOutHandle2 = USBGenRead(USBGEN_EP_NUM,(uint8_t*)&OUTPacket2,USBGEN_EP_SIZE);
             OUTNext = 0;
         }
     }
@@ -220,12 +200,10 @@ void handleOutPacket(uint8_t packet[64]) {
                 } else {
                     readNow = 56;
                 }
-                /*
                 cumSum = 0;
                 for (int i = 8; i < readNow+8; i++) {
                     cumSum += packet[i];
                 }
-                */
                 pIndex = readNow;
                 if (pIndex >= pSize) {
                     mode = 0;
@@ -250,11 +228,9 @@ void handleOutPacket(uint8_t packet[64]) {
         } else {
             readNow = 64;
         }
-        /*
         for (int i = 0; i < readNow; i++) {
             cumSum += packet[i];
         }
-        */
         pIndex += readNow;
         if (pIndex >= pSize) {
             mode = 0;
