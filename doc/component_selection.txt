@@ -1,0 +1,25 @@
+Component selection
+---------------------------------------
+
+DSP Microcontroller = dsPIC33EP64MC202
+  - Alternates: dsPIC33FJ64GP202, dsPIC33EP256MU806
+
+USB Microcontroller = PIC16F1454
+
+ADC = AD7328 or (AD7322 + DG409)
+
+DAC = AD5724R or AD5624R
+  - Alternates: AD5724, AD5684R
+
+Power converter = TPS65130
+
+USB socket?
+
+SD card socket?
+
+Screw terminals?
+
+ICSP headers?
+
+Passive components?
+
