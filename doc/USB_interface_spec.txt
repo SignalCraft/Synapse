@@ -1,0 +1,8 @@
+USB interface, from the computer's perspective:
+
+I send a packet, and wait for a response.
+
+* RESET : response irrelavent
+* RESET and wait for program : response irrelavent
+* Are you alive? : respods yes, and I am in [bootloader / program] mode
+* Here is a program : response acknowledge with checksum

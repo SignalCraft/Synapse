@@ -1,0 +1,28 @@
+Overall design specs:
+
+* 4 diff / 8 SE analog inputs
+  * 500ksps sample rate
+  * 12 bit accuracy
+  * +/- 10V range, with optional selectable smaller ranges
+
+* 4 SE analog outputs
+  * Effective 500ksps output rate (tentative)
+  * 12 bit accuracy (tentative)
+  * +/- 10V range, with optional selectable smaller ranges
+
+* At least 12 digital I/O
+
+* Fast DSP processor
+  * At least 40 MIPS
+  * At least 8K RAM
+
+* USB connectivity
+  * Programmed by computer
+  * DAQ interface to computer at necesary speed
+
+* Data logging
+  * SD card interface at necessary speed
+
+* Powered by 5V USB
+  * Onboard +/- 10V (or 15V) boost converter
+  

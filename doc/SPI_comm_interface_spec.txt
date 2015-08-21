@@ -1,0 +1,8 @@
+SPI Interface, from the DSP's perspective:
+
+Bootloader mode:
+
+* Am I about to be programmed? : respond yes/no
+* Send me the program: respond [(last piece?) (number of bytes) (data)]
+
+Program mode:
