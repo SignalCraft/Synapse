@@ -3,10 +3,11 @@ Component selection
 
 DSP Microcontroller = dsPIC33EP64MC202
   - Alternates: dsPIC33FJ64GP202, dsPIC33EP256MU806
+  - or an atmel ARM cortex M4 chip
 
 USB Microcontroller = PIC16F1454
 
-ADC = AD7328 or (AD7322 + DG409)
+ADC = AD7327 or AD7328
 
 DAC = AD5724R or AD5624R
   - Alternates: AD5724, AD5684R
